@@ -16,8 +16,11 @@ public struct EonilFSEventsEventID: Hashable {
     fileprivate init(rawValue: UInt) {
         self.rawValue = FSEventStreamEventId(UInt32(truncatingIfNeeded: rawValue))
     }
-    public var hashValue: Int {
-        return rawValue.hashValue
+//    public var hashValue: Int {
+//        return rawValue.hashValue
+//    }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue.hashValue)
     }
 }
 public func == (a: EonilFSEventsEventID, b: EonilFSEventsEventID) -> Bool {
@@ -25,7 +28,7 @@ public func == (a: EonilFSEventsEventID, b: EonilFSEventsEventID) -> Bool {
 }
 
 public extension EonilFSEventsEventID {
-    public static var now: EonilFSEventsEventID {
+    static var now: EonilFSEventsEventID {
         return EonilFSEventsEventID(rawValue: kFSEventStreamEventIdSinceNow)
     }
     /*
@@ -46,7 +49,7 @@ public extension EonilFSEventsEventID {
      */
     @available(macOS, introduced: 10.5)
     @available(iOS, introduced: 6.0)
-    public static func getCurrentEventId() -> EonilFSEventsEventID {
+    static func getCurrentEventId() -> EonilFSEventsEventID {
         let eventId = FSEventsGetCurrentEventId()
         return EonilFSEventsEventID(rawValue: eventId)
     }
